@@ -23,8 +23,8 @@
 import logging
 import os
 
-from celery.schedules import crontab
-from flask_caching.backends.filesystemcache import FileSystemCache
+#from celery.schedules import crontab
+#from flask_caching.backends.filesystemcache import FileSystemCache
 
 logger = logging.getLogger()
 
@@ -41,12 +41,32 @@ EXAMPLES_HOST = os.getenv("EXAMPLES_HOST")
 EXAMPLES_PORT = os.getenv("EXAMPLES_PORT")
 EXAMPLES_DB = os.getenv("EXAMPLES_DB")
 
+#PREVIOUS_SECRET_KEY = 'CHANGE_ME_TO_A_COMPLEX_RANDOM_SECRET'
+SECRET_KEY = 'FWqL+5LgmCiiNcnKc5cT4w+RVwPx4TzrKcWyj8m49BvErNlGDQY+rJT8'
 # The SQLAlchemy connection string.
 SQLALCHEMY_DATABASE_URI = (
     f"{DATABASE_DIALECT}://"
     f"{DATABASE_USER}:{DATABASE_PASSWORD}@"
     f"{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_DB}"
 )
+
+#PUBLIC_ROLE_LIKE = "Admin"
+
+TALISMAN_ENABLED = False
+
+HTTP_HEADERS = {'X-Frame-Options': 'ALLOWALL'}
+
+FAB_ADD_SECURITY_API = True
+#FAB_API_SWAGGER_UI = True
+
+LANGUAGES = {
+    'en': {'flag': 'us', 'name': 'English'},
+    'de': {'flag': 'de', 'name': 'Deutsch'},
+    'fr': {'flag': 'fr', 'name': 'French'},
+    'it': {'flag': 'it', 'name': 'Italy'},
+    'ja': {'flag': 'jp', 'name': 'Japan'},
+    'ru': {'flag': 'ru', 'name': 'Russia'},
+}
 
 SQLALCHEMY_EXAMPLES_URI = (
     f"{DATABASE_DIALECT}://"
@@ -59,7 +79,7 @@ REDIS_PORT = os.getenv("REDIS_PORT", "6379")
 REDIS_CELERY_DB = os.getenv("REDIS_CELERY_DB", "0")
 REDIS_RESULTS_DB = os.getenv("REDIS_RESULTS_DB", "1")
 
-RESULTS_BACKEND = FileSystemCache("/app/superset_home/sqllab")
+#RESULTS_BACKEND = FileSystemCache("/app/superset_home/sqllab")
 
 CACHE_CONFIG = {
     "CACHE_TYPE": "RedisCache",
@@ -72,25 +92,25 @@ CACHE_CONFIG = {
 DATA_CACHE_CONFIG = CACHE_CONFIG
 
 
-class CeleryConfig:
-    broker_url = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_CELERY_DB}"
-    imports = ("superset.sql_lab",)
-    result_backend = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_RESULTS_DB}"
-    worker_prefetch_multiplier = 1
-    task_acks_late = False
-    beat_schedule = {
-        "reports.scheduler": {
-            "task": "reports.scheduler",
-            "schedule": crontab(minute="*", hour="*"),
-        },
-        "reports.prune_log": {
-            "task": "reports.prune_log",
-            "schedule": crontab(minute=10, hour=0),
-        },
-    }
+#class CeleryConfig:
+#    broker_url = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_CELERY_DB}"
+#    imports = ("superset.sql_lab",)
+#    result_backend = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_RESULTS_DB}"
+#    worker_prefetch_multiplier = 1
+#    task_acks_late = False
+#    beat_schedule = {
+#        "reports.scheduler": {
+#            "task": "reports.scheduler",
+#            "schedule": crontab(minute="*", hour="*"),
+#        },
+#        "reports.prune_log": {
+#            "task": "reports.prune_log",
+#            "schedule": crontab(minute=10, hour=0),
+#        },
+#    }
 
 
-CELERY_CONFIG = CeleryConfig
+#CELERY_CONFIG = CeleryConfig
 
 FEATURE_FLAGS = {"ALERT_REPORTS": True}
 ALERT_REPORTS_NOTIFICATION_DRY_RUN = True
@@ -104,12 +124,12 @@ SQLLAB_CTAS_NO_LIMIT = True
 # Optionally import superset_config_docker.py (which will have been included on
 # the PYTHONPATH) in order to allow for local settings to be overridden
 #
-try:
-    import superset_config_docker
-    from superset_config_docker import *  # noqa
+#try:
+#    import superset_config_docker
+#    from superset_config_docker import *  # noqa
 
-    logger.info(
-        f"Loaded your Docker configuration at " f"[{superset_config_docker.__file__}]"
-    )
-except ImportError:
-    logger.info("Using default Docker config...")
+ #   logger.info(
+#        f"Loaded your Docker configuration at " f"[{superset_config_docker.__file__}]"
+#    )
+#except ImportError:
+#    logger.info("Using default Docker config...")
